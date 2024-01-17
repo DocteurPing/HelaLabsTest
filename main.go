@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// findWords returns a slice of words that can be constructed from a given set of letters.
 func findWords(letters string, words []string) []string {
 	result := make([]string, 0)
 
@@ -15,25 +16,28 @@ func findWords(letters string, words []string) []string {
 	}
 
 	for _, word := range words {
-		wordFreq := make(map[rune]int)
-		for _, char := range word {
-			wordFreq[char]++
-		}
-
-		canConstruct := true
-		for char, count := range wordFreq {
-			if letterCount, ok := letterFreq[char]; !ok || count > letterCount {
-				canConstruct = false
-				break
-			}
-		}
-
-		if canConstruct {
+		if canConstruct(letterFreq, word) {
 			result = append(result, word)
 		}
 	}
 
 	return result
+}
+
+// canConstruct checks if a given word can be constructed from a frequency map of letters.
+func canConstruct(letterFreq map[rune]int, word string) bool {
+	wordFreq := make(map[rune]int)
+	for _, char := range word {
+		wordFreq[char]++
+	}
+
+	for char, count := range wordFreq {
+		if letterCount, ok := letterFreq[char]; !ok || count > letterCount {
+			return false
+		}
+	}
+
+	return true
 }
 
 func main() {
@@ -45,10 +49,21 @@ func main() {
 	letters := os.Args[1]
 
 	// Read words from words.txt file
-	file, err := os.Open("words.txt")
+	words, err := readWordsFromFile("words.txt")
 	if err != nil {
-		fmt.Println("Error opening file:", err)
+		fmt.Println("Error reading file:", err)
 		os.Exit(1)
+	}
+
+	matchingWords := findWords(letters, words)
+	fmt.Println("Matching words:", matchingWords)
+}
+
+// readWordsFromFile reads words from a file and returns a slice of strings.
+func readWordsFromFile(filename string) ([]string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
 	}
 	defer func(file *os.File) {
 		err := file.Close()
@@ -64,10 +79,8 @@ func main() {
 	}
 
 	if scanner.Err() != nil {
-		fmt.Println("Error reading file:", scanner.Err())
-		os.Exit(1)
+		return nil, scanner.Err()
 	}
 
-	matchingWords := findWords(letters, words)
-	fmt.Println("Matching words:", matchingWords)
+	return words, nil
 }
