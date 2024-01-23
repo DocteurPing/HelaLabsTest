@@ -2,6 +2,8 @@
 
 This Go program is designed to find words that can be constructed from a given set of letters. The program takes a set of letters as a command-line argument and reads a list of English words from a file named "words.txt". It then identifies and displays the words that can be constructed from the provided letters.
 
+### This is the benchamark version of this program it will generate a random string of different length and then find all the words that can be made from it. It will also display infromation about the execution time and the number of words found.
+
 ## Instructions
 
 To run the program, follow these steps:
@@ -15,20 +17,11 @@ To run the program, follow these steps:
 4. Run the program using the following command:
 
     ```bash
-    go run main.go <letters>
+    go run main.go
     ```
-
-   Replace `<letters>` with the set of letters you want to use for finding matching words.
 
 5. View the output, which will display the words that can be constructed from the provided letters.
 
-## Example Usage
-
-```bash
-go run main.go yxmiasdaegw
-```
-
-This command will find and display the words that can be constructed from the letters "yxmiasdaegw".
 ## Additional Information
 
 - The program reads words from a file named "words.txt." Ensure this file exists in the same directory as the executable or update the file path accordingly.
