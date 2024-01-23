@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
+	"time"
 )
 
 // findWords returns a slice of words that can be constructed from a given set of letters.
@@ -41,13 +43,6 @@ func canConstruct(letterFreq map[rune]int, word string) bool {
 }
 
 func main() {
-	// Check if at least one command-line argument is provided
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <letters>")
-		os.Exit(1)
-	}
-	letters := os.Args[1]
-
 	// Read words from words.txt file
 	words, err := readWordsFromFile("words.txt")
 	if err != nil {
@@ -55,8 +50,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	matchingWords := findWords(letters, words)
-	fmt.Println("Matching words:", matchingWords)
+	benchmarkRandomStrings(words)
 }
 
 // readWordsFromFile reads words from a file and returns a slice of strings.
@@ -83,4 +77,32 @@ func readWordsFromFile(filename string) ([]string, error) {
 	}
 
 	return words, nil
+}
+
+// randomString generates a random string of given length
+func randomString(length int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyz")
+	result := make([]rune, length)
+	for i := range result {
+		result[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(result)
+}
+
+// benchmarkRandomStrings benchmarks the findWords function with random strings of different lengths
+func benchmarkRandomStrings(words []string) {
+	testLengths := []int{4, 8, 12, 50, 100, 200}
+
+	for _, length := range testLengths {
+		fmt.Printf("%d chars \n", length)
+		startTime := time.Now()
+
+		randomStr := randomString(length)
+		fmt.Println("Genrated string: ", randomStr)
+		matchingWords := findWords(randomStr, words)
+		fmt.Println("Matching words:", matchingWords)
+
+		elapsedTime := time.Since(startTime)
+		fmt.Printf("Execution time: %v\n", elapsedTime)
+	}
 }
