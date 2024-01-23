@@ -2,7 +2,7 @@
 
 This Go program is designed to find words that can be constructed from a given set of letters. The program takes a set of letters as a command-line argument and reads a list of English words from a file named "words.txt". It then identifies and displays the words that can be constructed from the provided letters.
 
-### This is the benchamark version of this program it will generate a random string of different length and then find all the words that can be made from it. It will also display infromation about the execution time and the number of words found.
+### This is the benchmark version of this program it will generate a random string of different length and then find all the words that can be made from it. It will also display information about the execution time and the number of words found.
 
 ## Instructions
 
